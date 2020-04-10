@@ -36,7 +36,9 @@ os: Visual Studio 2017
 #---------------------------------#
 
 install:
-  - cmd: pwd; ls
+  - cmd: pwd
+  - cmd: dir
+  - cmd: echo %APPVEYOR_BUILD_FOLDER%
   - cmd: git submodule update --init --recursive
   - cmd: msbuild /version
 
@@ -44,17 +46,16 @@ install:
 configuration: Release
 
 build_script:
-  - cmd: msbuild "C:\projects\vsmr\vSMR.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: msbuild "%APPVEYOR_BUILD_FOLDER%\vSMR.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
-  - cmd: mkdir vSMR-nightly
-  - cmd: cp Release\vSMR.dll vSMR-nightly\
-  - cmd: cp vSMR\vSMR_Profiles.json vSMR-nightly\
-  - cmd: 7z a vSMR-nightly.zip %APPVEYOR_BUILD_FOLDER%\vSMR-nightly\
+  - cmd: mkdir plugin-nightly
+  - cmd: cp Release\vSMR.dll plugin-nightly\
+  - cmd: 7z a plugin-nightly.zip %APPVEYOR_BUILD_FOLDER%\plugin-nightly\
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 artifacts:
-  - path: vSMR-nightly.zip
+  - path: plugin-nightly.zip
