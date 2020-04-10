@@ -36,6 +36,7 @@ os: Visual Studio 2017
 #---------------------------------#
 
 install:
+  - cmd: pwd; ls
   - cmd: git submodule update --init --recursive
   - cmd: msbuild /version
 
